@@ -103,6 +103,7 @@ class ToDecoder(threading.Thread):
     
     def write_filtered(self):
         """Write back pii filtered content to file with original name."""
-        filtered_file_path = os.path.join(self.filtered_dir, os.path.split(self.in_filename)[1])
+        filtered_file_name = "pii_filtered_{}".format(os.path.split(self.in_filename)[1])
+        filtered_file_path = os.path.join(self.filtered_dir, filtered_file_name)
         with open(filtered_file_path, 'w') as f:
             f.write(self.filtered_data)
