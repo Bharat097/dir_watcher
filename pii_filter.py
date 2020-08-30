@@ -10,7 +10,7 @@ date             = re.compile('(?:(?<!\:)(?<!\:\d)[0-3]?\d(?:st|nd|rd|th)?\s+(?:
 time             = re.compile('\d{1,2}:\d{2} ?(?:[ap]\.?m\.?)?|\d[ap]\.?m\.?', re.IGNORECASE)
 phone            = re.compile('''((?:(?<![\d-])(?:\+?\d{1,3}[-.\s*]?)?(?:\(?\d{3}\)?[-\s*]?)?\d{3}[-\s*]?\d{4}(?![\d-]))|(?:(?<![\d-])(?:(?:\(\+?\d{2}\))|(?:\+?\d{2}))\s*\d{2}\s*\d{3}\s*\d{4}(?![\d-])))''')
 phones_with_exts = re.compile('((?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*(?:[2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|(?:[2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[-]\s*)?)?(?:[2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[-]\s*)?(?:[0-9]{4})(?:\s*(?:#|x?|ext?|extension)\s*(?:\d+)?))', re.IGNORECASE)
-email            = re.compile("([a-z0-9!#$%&'*+\/=?^_`{|.}~-]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)", re.IGNORECASE)
+email            = re.compile("([a-z0-9!#$%&'*+=?^_`{|.}~-]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)", re.IGNORECASE)
 ip               = re.compile('(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', re.IGNORECASE)
 ipv6             = re.compile('\s*(?!.*::.*::)(?:(?!:)|:(?=:))(?:[0-9a-f]{0,4}(?:(?<=::)|(?<!::):)){6}(?:[0-9a-f]{0,4}(?:(?<=::)|(?<!::):)[0-9a-f]{0,4}(?:(?<=::)|(?<!:)|(?<=:)(?<!::):)|(?:25[0-4]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-4]|2[0-4]\d|1\d\d|[1-9]?\d)){3})\s*', re.VERBOSE|re.IGNORECASE|re.DOTALL)
 credit_card      = re.compile('((?:(?:\\d{4}[- ]?){3}\\d{4}|\\d{15,16}))(?![\\d])')
@@ -25,12 +25,12 @@ drive            = re.compile(r'(?i)(.:)[\\|/]+')
 pii_list = {
     "dates"            : date,
     "times"            : time,
+    "credit_cards"     : credit_card,
     "phones"           : phone,
     "phones_with_exts" : phones_with_exts,
     "emails"           : email,
     "ips"              : ip,
     "ipv6s"            : ipv6,
-    "credit_cards"     : credit_card,
     "btc_addresses"    : btc_address,
     "street_addresses" : street_address,
     "zip_codes"        : zip_code,
@@ -46,7 +46,7 @@ class ToDecoder(threading.Thread):
 
     def __init__(self, file_name):
         """Initialize."""
-        super().__init__()
+        super(ToDecoder, self).__init__()
         self.file = file_name
         self.current_dir = os.path.abspath(os.path.dirname(__file__))
         self.file_path = os.path.join(self.current_dir, "todecode", self.file)

@@ -11,7 +11,7 @@ class Watcher(threading.Thread):
 
     def __init__(self, action, path=None, file_type=[]):
         """Initialize the parameters."""
-        super().__init__()
+        super(Watcher, self).__init__()
         self.files = []
         self.file_handler_threads = []
         self.mtimes = {}
@@ -42,6 +42,7 @@ class Watcher(threading.Thread):
 
     def monitor_once(self):
         """Monitor path once and detect the new/changed files."""
+        # print(self.files)
         for f in self.files:
             file_path = os.path.join(self.path, f)
             try:
@@ -76,7 +77,7 @@ class Watcher(threading.Thread):
     def handle_new_file(self, file_name):
         """Take appropriate action on detection of new file."""
         if self.action == "store_to_zip":
-            obj = Zipper(file_name)
+            obj = Zipper(self.path, file_name)
         elif self.action == "filter_zip":
             obj = ToDecoder(file_name)
         # self.file_handler_threads.append(obj)

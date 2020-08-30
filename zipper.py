@@ -9,12 +9,13 @@ import zipfile
 class Zipper(threading.Thread):
     """Create the zip file and store it in todecode folder."""
 
-    def __init__(self, file_name):
+    def __init__(self, dir_path, file_name):
         """Initialize."""
-        super().__init__()
+        super(Zipper, self).__init__()
         self.current_dir = os.path.abspath(os.path.dirname(__file__))
         self.file_name = file_name
-        self.file = os.path.join(self.current_dir, file_name)
+        self.dir_path = dir_path
+        self.file = os.path.join(self.dir_path, file_name)
         self.dest_path = os.path.join(self.current_dir, "todecode")
         if not os.path.exists(self.dest_path):
             os.mkdir(self.dest_path)
@@ -50,4 +51,4 @@ class Zipper(threading.Thread):
 
         with zipfile.ZipFile(z, "w") as file:
             file.setpassword(bytes(zip_file_pwd, 'utf-8'))
-            file.write(self.file, arcname=self.file)
+            file.write(self.file, arcname=self.file_name)
